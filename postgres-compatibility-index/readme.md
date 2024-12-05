@@ -1,6 +1,8 @@
 # PostgreSQL Compatibility Index (PCI)
 
-This repository provides a standardized method to evaluate the compatibility of a database system with PostgreSQL 17 using fixed feature categories and scoring rules.
+This repository provides a standardized method to evaluate the compatibility of a database system with PostgreSQL using fixed feature categories and scoring rules.
+
+PostgreSQL 17 is used for baseline.
 
 ## Methodology
 
@@ -13,5 +15,5 @@ The final PCI score is a weighted average of the scores for each category.
 
 
 ### Prerequisites
-- Python 3.6+
+- Python 3.5+
 
