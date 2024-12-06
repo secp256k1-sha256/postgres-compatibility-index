@@ -1,0 +1,75 @@
+PostgreSQL Compatibility Index (PCI) Score: 21.55%
+{
+    "data_types": {
+        "Primitive Types": "full",
+        "Complex Types": "no",
+        "JSONB": "no",
+        "Geospatial Types": "no",
+        "Custom Types": "no",
+        "Full-Text Search": "no",
+        "Vector": "no"
+    },
+    "ddl_features": {
+        "Schemas": "full",
+        "Sequences": "no",
+        "Views": "no",
+        "Materialized Views": "no"
+    },
+    "sql_features": {
+        "CTEs": "full",
+        "Upsert": "full",
+        "Window Functions": "full",
+        "Subqueries": "full"
+    },
+    "procedural_features": {
+        "Stored Procedures": "no",
+        "Functions": "no",
+        "Triggers": "no"
+    },
+    "transaction_features": {
+        "ACID Compliance": "full",
+        "Isolation Levels": "partial",
+        "Nested Transactions": "no",
+        "Row-Level Locking": "partial"
+    },
+    "extensions": {
+        "Extension Support": "no",
+        "Foreign Data Wrappers": "no",
+        "Custom Plugins": "no"
+    },
+    "performance": {
+        "Index Types": "partial",
+        "Partitioning": "partial",
+        "Parallel Query Execution": "no"
+    },
+    "constraints": {
+        "Foriegn Key": "no",
+        "Check": "no",
+        "Not Null": "no",
+        "Unique": "no",
+        "Exclusion": "no"
+    },
+    "security": {
+        "Role Management": "full",
+        "GRANT/REVOKE Privileges": "full",
+        "Row-Level Security": "partial"
+    },
+    "replication": {
+        "Streaming Replication": "no",
+        "Logical Replication": "no"
+    },
+    "notifications": {
+        "LISTEN/NOTIFY": "no",
+        "Event Triggers": "no"
+    },
+    "miscellaneous": {
+        "Temporary Tables": "no",
+        "Monitoring and Statistics": "partial"
+    },
+    "utilities": {
+        "pg_dump": "no",
+        "pg_stat_statements": "no",
+        "pg_walinspect": "no",
+        "amcheck": "no"
+    }
+}

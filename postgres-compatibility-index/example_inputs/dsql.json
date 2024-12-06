@@ -5,7 +5,8 @@
         "JSONB": "no",
         "Geospatial Types": "no",
         "Custom Types": "no",
-        "Full-Text Search": "no"
+        "Full-Text Search": "no",
+	"Vector" : "no"
     },
     "ddl_features": {
         "Schemas": "full",
@@ -26,9 +27,9 @@
     },
     "transaction_features": {
         "ACID Compliance": "full",
-        "Isolation Levels": "full",
+        "Isolation Levels": "partial",
         "Nested Transactions": "no",
-        "Row-Level Locking": "full"
+        "Row-Level Locking": "partial"
     },
     "extensions": {
         "Extension Support": "no",
@@ -36,17 +37,17 @@
         "Custom Plugins": "no"
     },
     "performance": {
-        "Index Types": "full",
+        "Index Types": "partial",
         "Partitioning": "partial",
         "Parallel Query Execution": "no"
     },
     "constraints": {
         "Foriegn Key": "no",
         "Check": "no",
-		"Not Null": "no",
+	"Not Null": "no",
         "Unique": "no",
-		"Exclusion": "no"
-    },	
+	"Exclusion": "no"
+    },
     "security": {
         "Role Management": "full",
         "GRANT/REVOKE Privileges": "full",
@@ -62,6 +63,12 @@
     },
     "miscellaneous": {
         "Temporary Tables": "no",
-        "Monitoring and Statistics": "full"
+        "Monitoring and Statistics": "partial"
+    },
+    "utilities": {
+        "pg_dump": "no",
+        "pg_stat_statements": "no",
+        "pg_walinspect": "no",
+        "amcheck": "no"
     }
 }
