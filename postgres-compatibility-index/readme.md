@@ -17,3 +17,19 @@ The final PCI score is a weighted average of the scores for each category.
 ### Prerequisites
 - Python 3.5+
 
+### Example 
+1. CockroachDB
+/pci/postgres-compatibility-index/postgres-compatibility-index$ python3 pci_calculator.py example_inputs/cockroach.json outputs/cockroachdb_report.txt
+PCI Score: 53.66%
+Detailed report saved to outputs/cockroachdb_report.txt
+
+2. DSQL
+/pci/postgres-compatibility-index/postgres-compatibility-index$ python3 pci_calculator.py example_inputs/dsql.json outputs/dsql_report.txt
+PCI Score: 18.39%
+Detailed report saved to outputs/dsql_report.txt
+
+3. Yugabyte
+/pci/postgres-compatibility-index/postgres-compatibility-index$ python3 pci_calculator.py example_inputs/yugabyte.json outputs/ydb_report.txt
+PCI Score: 85.08%
+Detailed report saved to outputs/ydb_report.txt
+
