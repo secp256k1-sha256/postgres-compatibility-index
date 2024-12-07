@@ -1,4 +1,4 @@
-PostgreSQL Compatibility Index (PCI) Score: 21.55%
+PostgreSQL Compatibility Index (PCI) Score: 18.39%
 {
     "data_types": {
         "Primitive Types": "full",
@@ -43,7 +43,7 @@ PostgreSQL Compatibility Index (PCI) Score: 21.55%
         "Parallel Query Execution": "no"
     },
     "constraints": {
-        "Foriegn Key": "no",
+        "Foreign Key": "no",
         "Check": "no",
         "Not Null": "no",
         "Unique": "no",
@@ -71,5 +71,10 @@ PostgreSQL Compatibility Index (PCI) Score: 21.55%
         "pg_stat_statements": "no",
         "pg_walinspect": "no",
         "amcheck": "no"
+    },
+    "penalty": {
+        "superuser_restricted": "partial",
+        "transaction_limits": "full",
+        "read_limits": "no"
     }
 }

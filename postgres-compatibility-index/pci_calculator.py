@@ -11,12 +11,13 @@ STANDARD_FEATURES = {
     "transaction_features": ["ACID Compliance", "Isolation Levels", "Nested Transactions", "Row-Level Locking"],
     "extensions": ["Extension Support", "Foreign Data Wrappers", "Custom Plugins"],
     "performance": ["Index Types", "Partitioning", "Parallel Query Execution"],
-    "constraints":["Foriegn Key", "Check", "Not Null","Unique","Exclusion"],
+    "constraints":["Foreign Key", "Check", "Not Null","Unique","Exclusion"],
     "security": ["Role Management", "GRANT/REVOKE Privileges", "Row-Level Security"],
     "replication": ["Streaming Replication", "Logical Replication"],
     "notifications": ["LISTEN/NOTIFY", "Event Triggers"],
     "miscellaneous": ["Temporary Tables", "Monitoring and Statistics"],
-    "utilities": ["pg_dump","pg_stat_statements","pg_walinspect","amcheck"]
+    "utilities": ["pg_dump","pg_stat_statements","pg_walinspect","amcheck"],
+    "penalty": ["superuser_restricted", "transaction_limits", "read_limits"]  # Penalty category
 }
 
 # Weights for each category
@@ -33,7 +34,8 @@ FEATURE_WEIGHTS = {
     "replication": 5,
     "notifications": 5,
     "miscellaneous": 5,
-    "utilities": 5
+    "utilities": 5,
+    "penalty": -10  # Negative weight for penalties
 }
 
 # Scoring system
@@ -90,7 +92,7 @@ def main():
         with open(args.output_file, "w") as file:
             file.write(f"PostgreSQL Compatibility Index (PCI) Score: {pci_score}%\n")
             file.write(json.dumps(features, indent=4))
-        
+
         print(f"PCI Score: {pci_score}%")
         print(f"Detailed report saved to {args.output_file}")
 
