@@ -4,7 +4,7 @@ import sys
 
 # Standardized PostgreSQL feature set with categories and sub-features
 STANDARD_FEATURES = {
-    "data_types": ["Primitive Types", "Complex Types", "JSONB", "Geospatial Types", "Custom Types", "Full-Text Search"],
+    "data_types": ["Primitive Types", "Complex Types", "JSONB", "Geospatial Types", "Custom Types", "Full-Text Search","Vector"],
     "ddl_features": ["Schemas", "Sequences", "Views", "Materialized Views"],
     "sql_features": ["CTEs", "Upsert", "Window Functions", "Subqueries"],
     "procedural_features": ["Stored Procedures", "Functions", "Triggers"],
@@ -15,23 +15,25 @@ STANDARD_FEATURES = {
     "security": ["Role Management", "GRANT/REVOKE Privileges", "Row-Level Security"],
     "replication": ["Streaming Replication", "Logical Replication"],
     "notifications": ["LISTEN/NOTIFY", "Event Triggers"],
-    "miscellaneous": ["Temporary Tables", "Monitoring and Statistics"]
+    "miscellaneous": ["Temporary Tables", "Monitoring and Statistics"],
+    "utilities": ["pg_dump","pg_stat_statements","pg_walinspect","amcheck"]
 }
 
 # Weights for each category
 FEATURE_WEIGHTS = {
-    "data_types": 10,
-    "ddl_features": 10,
-    "sql_features": 10,
+    "data_types": 5,
+    "ddl_features": 5,
+    "sql_features": 5,
     "procedural_features": 15,
-    "transaction_features": 10,
-    "extensions": 10,
+    "transaction_features": 15,
+    "extensions": 15,
     "performance": 5,
     "constraints":10,
     "security": 5,
     "replication": 5,
     "notifications": 5,
-    "miscellaneous": 5
+    "miscellaneous": 5,
+    "utilities": 5
 }
 
 # Scoring system
