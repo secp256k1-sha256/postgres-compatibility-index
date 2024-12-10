@@ -40,3 +40,7 @@ The final PCI score is a weighted average of the scores for each category.
 - PCI Score: 85.08%
 - Detailed report saved to outputs/ydb_report.txt
 
+### AlloyDB
+/pci/postgres-compatibility-index/postgres-compatibility-index$ python3 pci_calculator.py example_inputs/alloydb.json outputs/alloydb_report.txt
+- PCI Score: 100%
+- Detailed report saved to outputs/alloydb_report.txt
