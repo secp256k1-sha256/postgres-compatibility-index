@@ -6,7 +6,7 @@
         "Geospatial Types": "partial",
         "Custom Types": "full",
         "Full-Text Search": "full",
-        "Vector": "no"
+        "Vector": "full"
     },
     "ddl_features": {
         "Schemas": "full",
@@ -28,7 +28,7 @@
     "transaction_features": {
         "ACID Compliance": "full",
         "Isolation Levels": "full",
-        "Nested Transactions": "no",
+        "Nested Transactions": "full",
         "Row-Level Locking": "full"
     },
     "extensions": {
@@ -39,7 +39,7 @@
     "performance": {
         "Index Types": "partial",
         "Partitioning": "full",
-        "Parallel Query Execution": "no"
+        "Parallel Query Execution": "full"
     },
     "constraints": {
         "Foreign Key": "full",
