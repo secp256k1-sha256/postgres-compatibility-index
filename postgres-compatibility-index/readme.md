@@ -36,7 +36,7 @@ The final PCI score is a weighted average of the scores for each category.
 - Detailed report saved to outputs/dsql_report.txt
 
 ### Yugabyte
-/pci/postgres-compatibility-index/postgres-compatibility-index$ python3 pci_calculator.py example_inputs/yugabyte.json outputs/ydb_report.txt
+/pci/postgres-compatibility-index/postgres-compatibility-index$ python3 pci_calculator.py example_inputs/yugabyte.json outputs/yugabytedb_report.txt
 - PCI Score: 85.08%
-- Detailed report saved to outputs/ydb_report.txt
+- Detailed report saved to outputs/yugabytedb_report.txt
 
