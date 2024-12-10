@@ -172,9 +172,7 @@ def calculate_pci(features):
 
 def main():
 
-    connection = psycopg2.connect(
-        dbname="testdb", user="testuser", password="your_password", host="host_ip"
-    )
+    connection = psycopg2.connect()
     connection.autocommit = True
     cursor = connection.cursor()
 
@@ -187,6 +185,8 @@ def main():
     pci_results = {category: {} for category in FEATURES.keys()}
     for category, subfeatures in FEATURES.items():
         for subfeature in subfeatures:
+            connection = psycopg2.connect()
+            cursor = connection.cursor()
             pci_results[category][subfeature] = test_feature(cursor, category, subfeature)
 
     # Calculate PCI score
