@@ -15,9 +15,15 @@ The final PCI score is a weighted average of the scores for each category.
 
 
 ### Prerequisites
-- Python 3.5+
+- Python 3.5+, psycopg2, postgresql client and working connection to the database to be tested. 
 
-## Usage Examples
+## Automated scoring
+- Add username and connection details of the database where tests are supposed to run in pci_autotest.py
+- You will lose points for extensions that you do not install.
+- python3 pci_autotest.py   
+
+
+## Manual mode example
 
 ### CockroachDB
 /pci/postgres-compatibility-index/postgres-compatibility-index$ python3 pci_calculator.py example_inputs/cockroach.json outputs/cockroachdb_report.txt
