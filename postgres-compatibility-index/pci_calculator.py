@@ -20,22 +20,21 @@ STANDARD_FEATURES = {
     "penalty": ["superuser_restricted", "transaction_limits", "read_limits"]  # Penalty category
 }
 
-# Weights for each category
 FEATURE_WEIGHTS = {
-    "data_types": 5,
-    "ddl_features": 5,
-    "sql_features": 5,
-    "procedural_features": 15,
-    "transaction_features": 15,
-    "extensions": 15,
-    "performance": 5,
-    "constraints":10,
-    "security": 5,
-    "replication": 5,
-    "notifications": 5,
-    "miscellaneous": 5,
-    "utilities": 5,
-    "penalty": -10  # Negative weight for penalties
+    "data_types": 7,
+    "ddl_features": 7,
+    "sql_features": 8,
+    "procedural_features": 10,
+    "transaction_features": 10,
+    "extensions": 10,
+    "performance": 8,
+    "constraints": 10,
+    "security": 8,
+    "replication": 6,
+    "notifications": 4,
+    "miscellaneous": 6,
+    "utilities": 6,
+    "penalty": -10  # Penalty weight as a negative deduction
 }
 
 # Scoring system
@@ -59,19 +58,26 @@ def calculate_pci(features):
     Calculate the PostgreSQL Compatibility Index (PCI) score.
     """
     total_score = 0
-    total_weight = sum(FEATURE_WEIGHTS.values())
+   # total_weight = sum(FEATURE_WEIGHTS.values())
+
+   # for category, subfeatures in STANDARD_FEATURES.items():
+   #     category_score = 0
+   #     for subfeature in subfeatures:
+   #         support_level = features[category][subfeature]
+   #         category_score += SUPPORT_SCORES[support_level]
+        # Average category score and apply weight
+   #     category_percentage = category_score / len(subfeatures)
+   #     weighted_score = category_percentage * FEATURE_WEIGHTS[category]
+   #     total_score += weighted_score
 
     for category, subfeatures in STANDARD_FEATURES.items():
-        category_score = 0
-        for subfeature in subfeatures:
-            support_level = features[category][subfeature]
-            category_score += SUPPORT_SCORES[support_level]
-        # Average category score and apply weight
-        category_percentage = category_score / len(subfeatures)
-        weighted_score = category_percentage * FEATURE_WEIGHTS[category]
-        total_score += weighted_score
+        category_score = sum(SUPPORT_SCORES[features[category][subfeature]] for subfeature in subfeatures)  # Sum feature scores
+        category_percentage = category_score / len(subfeatures)  # Average for the category
+        weighted_score = category_percentage * FEATURE_WEIGHTS[category]  # Apply weight
+        total_score += weighted_score  # Increment total score
 
-    return round((total_score / total_weight) * 100, 2)
+   # return round((total_score / total_weight) * 100, 2)
+    return round(total_score, 2)
 
 def main():
     parser = argparse.ArgumentParser(description="Calculate PostgreSQL Compatibility Index (PCI).")

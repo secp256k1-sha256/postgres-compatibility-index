@@ -70,5 +70,10 @@
         "pg_stat_statements": "full",
         "pg_walinspect": "full",
         "amcheck": "full"
+    },
+    "penalty": {
+        "superuser_restricted": "no",
+        "transaction_limits": "no",
+        "read_limits": "no"
     }
 }
