@@ -2,6 +2,7 @@ import psycopg2
 from psycopg2 import sql
 import json
 import os
+from tabulate import tabulate
 
 # PostgreSQL connection parameters from environment variables or defaults
 PG_HOST = os.getenv("PG_HOST", "localhost")
@@ -162,7 +163,6 @@ def test_feature(cursor, feature_category, feature_name):
         return "no"
 
 # Continue with schema creation, PCI calculations, and detailed reporting (same structure as earlier).
-
 def calculate_pci(features):
     """
     Calculate the PCI score based on feature test results.
@@ -171,6 +171,7 @@ def calculate_pci(features):
     total_score = 0
     total_weight = sum(FEATURE_WEIGHTS.values())
     penalty = 0
+    failed_tests = []
 
     for category, subfeatures in FEATURES.items():
         category_score = 0
@@ -179,6 +180,7 @@ def calculate_pci(features):
             category_score += SUPPORT_SCORES[result]
             if result == "no":
                 penalty += PENALTY_PER_FAILURE
+                failed_tests.append((category, subfeature))
 
         weighted_score = (category_score / len(subfeatures)) * FEATURE_WEIGHTS[category]
         total_score += weighted_score
@@ -186,7 +188,19 @@ def calculate_pci(features):
     # Apply penalties and cap the score
     total_score = max(0, total_score - penalty)
     total_score = min(100, total_score)
-    return round(total_score, 2)
+    return round(total_score, 2), failed_tests
+
+def print_summary(pci_score, failed_tests):
+    """Print a detailed summary of the PCI results."""
+    print("\n==================== PCI SUMMARY REPORT ====================")
+    print(f"Overall PCI Score: {pci_score}%\n")
+
+    if failed_tests:
+        print("Failed Features:\n")
+        print(tabulate(failed_tests, headers=["Category", "Feature"], tablefmt="grid"))
+    else:
+        print("All features passed successfully!\n")
+    print("==========================================================\n")
 
 def main():
 
@@ -206,8 +220,8 @@ def main():
             pci_results[category][subfeature] = test_feature(cursor, category, subfeature)
 
     # Calculate PCI score
-    pci_score = calculate_pci(pci_results)
-    print(f"PCI Score: {pci_score}%")
+    pci_score, failed_tests = calculate_pci(pci_results)
+    print_summary(pci_score, failed_tests)
 
     # Save results
     with open("pci_report.json", "w") as report_file:
