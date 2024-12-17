@@ -1,6 +1,24 @@
 import psycopg2
 from psycopg2 import sql
 import json
+import os
+
+# PostgreSQL connection parameters from environment variables or defaults
+PG_HOST = os.getenv("PG_HOST", "localhost")
+PG_PORT = os.getenv("PG_PORT", 5432)
+PG_USER = os.getenv("PG_USER", "postgres")
+PG_PASSWORD = os.getenv("PG_PASSWORD", "password")
+PG_DBNAME = os.getenv("PG_DBNAME", "testdb")
+
+def get_connection():
+    """Establish and return a PostgreSQL connection."""
+    return psycopg2.connect(
+        host=PG_HOST,
+        port=PG_PORT,
+        user=PG_USER,
+        password=PG_PASSWORD,
+        dbname=PG_DBNAME
+    )
 
 # Define the features to test
 FEATURES = {
@@ -172,7 +190,7 @@ def calculate_pci(features):
 
 def main():
 
-    connection = psycopg2.connect()
+    connection = get_connection()
     connection.autocommit = True
     cursor = connection.cursor()
 
@@ -185,8 +203,6 @@ def main():
     pci_results = {category: {} for category in FEATURES.keys()}
     for category, subfeatures in FEATURES.items():
         for subfeature in subfeatures:
-            connection = psycopg2.connect()
-            cursor = connection.cursor()
             pci_results[category][subfeature] = test_feature(cursor, category, subfeature)
 
     # Calculate PCI score
