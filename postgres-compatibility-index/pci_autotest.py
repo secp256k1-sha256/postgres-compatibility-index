@@ -68,13 +68,13 @@ def test_feature(cursor, feature_category, feature_name):
             elif feature_name == "JSONB":
                 cursor.execute("CREATE TABLE test_jsonb (data JSONB);")
             elif feature_name == "Geospatial Types":
-                cursor.execute("CREATE TABLE test_geo (geom GEOMETRY);")
+                cursor.execute("CREATE EXTENSION postgis; CREATE TABLE test_geo (geom GEOMETRY);")
             elif feature_name == "Custom Types":
                 cursor.execute("CREATE TYPE mood AS ENUM ('happy', 'sad', 'neutral');")
             elif feature_name == "Full-Text Search":
                 cursor.execute("CREATE TABLE test_fts (content TSVECTOR);")
             elif feature_name == "Vector":
-                cursor.execute("CREATE TABLE test_vector (embedding VECTOR(3));")
+                cursor.execute("CREATE EXTENSION vector; CREATE TABLE test_vector (embedding VECTOR(3));")
 
         elif feature_category == "ddl_features":
             if feature_name == "Schemas":
