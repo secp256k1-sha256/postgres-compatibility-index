@@ -23,21 +23,18 @@ The final PCI score is a weighted average of the scores for each category.
 - You will lose points for extensions that you do not install. 
 - python3 pci_autotest.py
 
-- Example output in tabular format 
-========= PostgreSQL Compatibility Report =========
+### Example Output in Tabular Format
 
-Overall Compatibility Score: 85%
+**PostgreSQL Compatibility Report**
 
-The following features failed:
+**Overall Compatibility Score:** `85%`
 
-+--------------------+-------------------+
-| Category           | Feature           |
-+--------------------+-------------------+
-| data_types         | Vector            |
-| procedural_features| Triggers          |
-+--------------------+-------------------+
+#### Failed Features:
 
-===================================================
+| **Category**          | **Feature**         |
+|------------------------|---------------------|
+| `data_types`          | `Vector`            |
+| `procedural_features` | `Triggers`          |
 
 
 ## Manual mode example
