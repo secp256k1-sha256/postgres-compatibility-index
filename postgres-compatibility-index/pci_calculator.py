@@ -58,17 +58,6 @@ def calculate_pci(features):
     Calculate the PostgreSQL Compatibility Index (PCI) score.
     """
     total_score = 0
-   # total_weight = sum(FEATURE_WEIGHTS.values())
-
-   # for category, subfeatures in STANDARD_FEATURES.items():
-   #     category_score = 0
-   #     for subfeature in subfeatures:
-   #         support_level = features[category][subfeature]
-   #         category_score += SUPPORT_SCORES[support_level]
-        # Average category score and apply weight
-   #     category_percentage = category_score / len(subfeatures)
-   #     weighted_score = category_percentage * FEATURE_WEIGHTS[category]
-   #     total_score += weighted_score
 
     for category, subfeatures in STANDARD_FEATURES.items():
         category_score = sum(SUPPORT_SCORES[features[category][subfeature]] for subfeature in subfeatures)  # Sum feature scores
@@ -76,7 +65,6 @@ def calculate_pci(features):
         weighted_score = category_percentage * FEATURE_WEIGHTS[category]  # Apply weight
         total_score += weighted_score  # Increment total score
 
-   # return round((total_score / total_weight) * 100, 2)
     return round(total_score, 2)
 
 def main():
