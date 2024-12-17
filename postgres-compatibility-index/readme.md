@@ -18,7 +18,7 @@ The final PCI score is a weighted average of the scores for each category.
 - Python 3.5+, psycopg2, postgresql client and working connection to the database to be tested. 
 
 ## Automated scoring
-- Add username and connection details of the database where tests are supposed to run in pci_autotest.py
+- Set environment variables or provide inline username, connection details of the database where tests are supposed to run.
 - You will lose points for extensions that you do not install.
 - python3 pci_autotest.py   
 
