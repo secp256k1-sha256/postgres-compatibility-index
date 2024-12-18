@@ -79,7 +79,7 @@ def test_feature(cursor, feature_category, feature_name):
 
         elif feature_category == "ddl_features":
             if feature_name == "Schemas":
-                cursor.execute("CREATE SCHEMA test_schema;")
+                cursor.execute("DROP SCHEMA IF EXISTS test_schema CASCADE; CREATE SCHEMA test_schema;")
             elif feature_name == "Sequences":
                 cursor.execute("CREATE SEQUENCE test_seq START 1;")
             elif feature_name == "Views":
