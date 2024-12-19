@@ -132,6 +132,17 @@ def test_feature(cursor, feature_category, feature_name):
                 cursor.execute("CREATE INDEX test_hash ON test_primitive USING hash (id);")
             elif feature_name == "Partitioning":
                 cursor.execute("CREATE TABLE test_part (id INT) PARTITION BY RANGE (id);")
+                cursor.execute("CREATE TABLE test_part1 PARTITION OF test_part FOR VALUES FROM (1) TO (100);")
+                cursor.execute("CREATE TABLE test_part2 PARTITION OF test_part FOR VALUES FROM (101) TO (200);")
+                cursor.execute("ANALYZE test_part;")
+                cursor.execute("EXPLAIN (FORMAT JSON) SELECT * FROM test_part WHERE id = 150;")
+                result = cursor.fetchone()
+                explain_output = result[0]
+                partitions_in_plan = json.dumps(explain_output)
+                if "test_part2" in partitions_in_plan and "test_part1" not in partitions_in_plan:
+                    return "full"
+                else:
+                    raise Exception("Partition Pruning test failed: Incorrect partitions included in the plan.")
             elif feature_name == "Parallel Query Execution":
                 cursor.execute("SET max_parallel_workers = 4; SET max_parallel_workers_per_gather=4; SELECT COUNT(*) FROM generate_series(1, 1000000) t(id);")
 
