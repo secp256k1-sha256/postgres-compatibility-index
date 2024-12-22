@@ -145,6 +145,18 @@ def test_feature(cursor, feature_category, feature_name):
                     raise Exception("Partition Pruning test failed: Incorrect partitions included in the plan.")
             elif feature_name == "Parallel Query Execution":
                 cursor.execute("SET max_parallel_workers = 4; SET max_parallel_workers_per_gather=4; SELECT COUNT(*) FROM generate_series(1, 1000000) t(id);")
+            elif feature_name == "Unlogged Table":
+                cursor.execute("drop table if exists unlogged_pci_demo;")
+                cursor.execute("select pg_current_wal_lsn() from pg_stat_database where datname=current_database();")
+                wal_lsn_before = cursor.fetchone()[0]
+                cursor.execute("create unlogged table unlogged_pci_demo(n int primary key,flag char,text varchar(1000));")
+                cursor.execute("insert into unlogged_pci_demo select generate_series, 'N',lpad('x',1000,'x') from generate_series(1,100000);")
+                cursor.execute(f"select (pg_wal_lsn_diff(pg_current_wal_lsn(),'{wal_lsn_before}')) from pg_stat_database where datname=current_database();")
+                diff_after = cursor.fetchone()[0]
+                if diff_after < 100000:
+                    return "full"
+                else:
+                    raise Exception("Unlogged Table test failed: Excessive WAL Generated.")
 
         elif feature_category == "constraints":
             if feature_name == "Foreign Key":
