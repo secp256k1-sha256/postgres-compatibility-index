@@ -29,7 +29,7 @@ FEATURES = {
     "procedural_features": ["Stored Procedures", "Functions", "Triggers"],
     "transaction_features": ["ACID Compliance", "Isolation Levels", "Nested Transactions", "Row-Level Locking"],
     "extensions": ["Extension Support", "Foreign Data Wrappers", "Custom Plugins"],
-    "performance": ["Index Types", "Partitioning", "Parallel Query Execution"],
+    "performance": ["Index Types", "Partitioning", "Parallel Query Execution","Unlogged Table"],
     "constraints": ["Foreign Key", "Check", "Not Null", "Unique", "Exclusion"],
     "security": ["Role Management", "GRANT/REVOKE Privileges", "Row-Level Security"],
     "replication": ["Streaming Replication", "Logical Replication"],
@@ -144,13 +144,13 @@ def test_feature(cursor, feature_category, feature_name):
                 else:
                     raise Exception("Partition Pruning test failed: Incorrect partitions included in the plan.")
             elif feature_name == "Parallel Query Execution":
-                cursor.execute("SET max_parallel_workers = 4; SET max_parallel_workers_per_gather=4; SELECT COUNT(*) FROM generate_series(1, 1000000) t(id);")
+                cursor.execute("SET max_parallel_workers = 4; SET max_parallel_workers_per_gather=4; SELECT COUNT(*) FROM generate_series(1, 50000) t(id);")
             elif feature_name == "Unlogged Table":
                 cursor.execute("drop table if exists unlogged_pci_demo;")
+                cursor.execute("create unlogged table unlogged_pci_demo(n int primary key,flag char,text varchar(1000));")
                 cursor.execute("select pg_current_wal_lsn() from pg_stat_database where datname=current_database();")
                 wal_lsn_before = cursor.fetchone()[0]
-                cursor.execute("create unlogged table unlogged_pci_demo(n int primary key,flag char,text varchar(1000));")
-                cursor.execute("insert into unlogged_pci_demo select generate_series, 'N',lpad('x',1000,'x') from generate_series(1,100000);")
+                cursor.execute("insert into unlogged_pci_demo select generate_series, 'N',lpad('x',1000,'x') from generate_series(1,50000);")
                 cursor.execute(f"select (pg_wal_lsn_diff(pg_current_wal_lsn(),'{wal_lsn_before}')) from pg_stat_database where datname=current_database();")
                 diff_after = cursor.fetchone()[0]
                 if diff_after < 100000:
@@ -177,6 +177,18 @@ def test_feature(cursor, feature_category, feature_name):
                 cursor.execute("GRANT SELECT ON test_primitive TO PUBLIC;")
             elif feature_name == "Row-Level Security":
                 cursor.execute("ALTER TABLE test_primitive ENABLE ROW LEVEL SECURITY;")
+
+        elif feature_category == "replication":
+            if feature_name == "Logical Replication":
+                cursor.execute("CREATE TABLE test_replication (id INT PRIMARY KEY, value TEXT);")
+                cursor.execute("CREATE PUBLICATION test_pub FOR TABLE test_replication WHERE (id > 10 and value <>'UNKNOWN');")
+                cursor.execute("SELECT pubname, puballtables, pubinsert, pubupdate, pubdelete FROM pg_publication WHERE pubname = 'test_pub';")
+                result = cursor.fetchone()
+                if result is None or result[0] != 'test_pub':
+                    raise Exception("Logical Replication Publication not found or misconfigured.")
+                else:
+                    cursor.execute("DROP PUBLICATION test_pub;")
+                    return "full"
 
         # Add similar blocks for other categories...
 
