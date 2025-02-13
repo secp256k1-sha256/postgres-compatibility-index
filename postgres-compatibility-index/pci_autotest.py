@@ -34,7 +34,7 @@ FEATURES = {
     "performance": ["Index Types", "Partitioning", "Parallel Query Execution","Unlogged Table"],
     "constraints": ["Foreign Key", "Check", "Not Null", "Unique", "Exclusion","DisableConstraint"],
     "transaction_features": ["ACID Compliance", "Isolation Levels", "Nested Transactions", "Row-Level Locking"],
-    "extensions": ["Extension Support", "Foreign Data Wrappers", "Custom Plugins"],
+    "extensions": ["Extension Support", "Foreign Data Wrappers"],
     "security": ["Role Management", "GRANT/REVOKE Privileges", "Row-Level Security"],
     "replication": ["Streaming Replication", "Logical Replication"],
     "notifications": ["LISTEN/NOTIFY", "Event Triggers"],
@@ -141,9 +141,7 @@ def test_feature(cursor, feature_category, feature_name):
                 else:
                     support ="no"
                 return support
-            elif feature_name == "Custom Plugins":
-                # Assuming a sample plugin; usually requires admin setup
-                pass
+            
 
         elif feature_category == "performance":
             if feature_name == "Index Types":
