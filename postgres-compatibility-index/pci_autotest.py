@@ -1,5 +1,6 @@
 import psycopg2
 from psycopg2 import sql
+from psycopg2 import errors
 import json
 import os
 from tabulate import tabulate
@@ -18,7 +19,10 @@ def get_connection():
         port=PG_PORT,
         user=PG_USER,
         password=PG_PASSWORD,
-        dbname=PG_DBNAME
+        dbname=PG_DBNAME,
+	    sslmode='require'
+        #sslrootcert='/home/dcgcore/postgres-compatibility-index/postgres-compatibility-index/root.crt'
+
     )
 
 # Define the features to test
@@ -27,10 +31,10 @@ FEATURES = {
     "ddl_features": ["Schemas", "Sequences", "Views", "Materialized Views"],
     "sql_features": ["CTEs", "Upsert", "Window Functions", "Subqueries"],
     "procedural_features": ["Stored Procedures", "Functions", "Triggers"],
+    "performance": ["Index Types", "Partitioning", "Parallel Query Execution","Unlogged Table"],
+    "constraints": ["Foreign Key", "Check", "Not Null", "Unique", "Exclusion","DisableConstraint"],
     "transaction_features": ["ACID Compliance", "Isolation Levels", "Nested Transactions", "Row-Level Locking"],
     "extensions": ["Extension Support", "Foreign Data Wrappers", "Custom Plugins"],
-    "performance": ["Index Types", "Partitioning", "Parallel Query Execution","Unlogged Table"],
-    "constraints": ["Foreign Key", "Check", "Not Null", "Unique", "Exclusion"],
     "security": ["Role Management", "GRANT/REVOKE Privileges", "Row-Level Security"],
     "replication": ["Streaming Replication", "Logical Replication"],
     "notifications": ["LISTEN/NOTIFY", "Event Triggers"],
@@ -59,6 +63,7 @@ PENALTY_PER_FAILURE = 5  # Negative points per failure
 
 
 def test_feature(cursor, feature_category, feature_name):
+    support ="no"
     try:
         # Test each feature based on its category and subfeature
         if feature_category == "data_types":
@@ -101,7 +106,9 @@ def test_feature(cursor, feature_category, feature_name):
             if feature_name == "Stored Procedures":
                 cursor.execute("CREATE PROCEDURE test_proc() LANGUAGE SQL AS $$ SELECT 1; $$; CALL test_proc();")
             elif feature_name == "Functions":
-                cursor.execute("CREATE FUNCTION test_func() RETURNS INT LANGUAGE SQL AS $$ SELECT 1; $$; SELECT test_func();")
+                cursor.execute("DROP FUNCTION IF EXISTS test_func();CREATE FUNCTION test_func() RETURNS INT LANGUAGE SQL AS $$ SELECT 1; $$; SELECT test_func();")
+                support = "partial"
+                cursor.execute("DROP FUNCTION IF EXISTS test_func_plpgsql();CREATE FUNCTION test_func_plpgsql() RETURNS void LANGUAGE plpgsql AS $$ begin null; end; $$; SELECT test_func_plpgsql();")
             elif feature_name == "Triggers":
                 cursor.execute("CREATE TABLE test_trig (id INT); CREATE FUNCTION test_trigger() RETURNS TRIGGER LANGUAGE plpgsql AS $$ BEGIN RETURN NEW; END; $$; CREATE TRIGGER trg BEFORE INSERT ON test_trig FOR EACH ROW EXECUTE FUNCTION test_trigger();")
 
@@ -109,7 +116,7 @@ def test_feature(cursor, feature_category, feature_name):
             if feature_name == "ACID Compliance":
                 cursor.execute("BEGIN; INSERT INTO test_primitive VALUES (1, 'test'); ROLLBACK;")
             elif feature_name == "Isolation Levels":
-                cursor.execute("BEGIN; SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; SET TRANSACTION ISOLATION LEVEL READ COMMITTED;")
+                cursor.execute("BEGIN; SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; SET TRANSACTION ISOLATION LEVEL READ COMMITTED; ROLLBACK;")
             elif feature_name == "Nested Transactions":
                 cursor.execute("BEGIN; SAVEPOINT sp; RELEASE SAVEPOINT sp;")
             elif feature_name == "Row-Level Locking":
@@ -117,9 +124,23 @@ def test_feature(cursor, feature_category, feature_name):
 
         elif feature_category == "extensions":
             if feature_name == "Extension Support":
-                cursor.execute("CREATE EXTENSION IF NOT EXISTS pg_trgm;")
+                #cursor.execute("CREATE EXTENSION IF NOT EXISTS pg_trgm;")
+                cursor.execute("select coalesce((select 1 from pg_available_extensions where name ='pg_trgm'),0)")
+                extensions = cursor.fetchone()[0]
+                if extensions != 0:
+                    support ="full"
+                else:
+                    support ="no"
+                return support
             elif feature_name == "Foreign Data Wrappers":
-                cursor.execute("CREATE EXTENSION IF NOT EXISTS postgres_fdw;")
+                #cursor.execute("CREATE EXTENSION IF NOT EXISTS postgres_fdw;")
+                cursor.execute("select coalesce((select 1 from pg_available_extensions where name ='postgres_fdw'),0")
+                extensions = cursor.fetchone()[0]
+                if extensions !=  0:
+                    support ="full"
+                else:
+                    support ="no"
+                return support
             elif feature_name == "Custom Plugins":
                 # Assuming a sample plugin; usually requires admin setup
                 pass
@@ -127,14 +148,18 @@ def test_feature(cursor, feature_category, feature_name):
         elif feature_category == "performance":
             if feature_name == "Index Types":
                 cursor.execute("CREATE INDEX test_btree ON test_primitive USING btree (id);")
+                support = "partial"
                 cursor.execute("CREATE INDEX test_gin ON test_jsonb USING gin (data);")
+                support = "partial"
                 cursor.execute("CREATE INDEX test_gist ON test_fts USING gist (content);")
+                support = "partial"
                 cursor.execute("CREATE INDEX test_hash ON test_primitive USING hash (id);")
             elif feature_name == "Partitioning":
-                cursor.execute("CREATE TABLE test_part (id INT) PARTITION BY RANGE (id);")
-                cursor.execute("CREATE TABLE test_part1 PARTITION OF test_part FOR VALUES FROM (1) TO (100);")
-                cursor.execute("CREATE TABLE test_part2 PARTITION OF test_part FOR VALUES FROM (101) TO (200);")
-                cursor.execute("ANALYZE test_part;")
+                cursor.execute("""CREATE TABLE test_part (id INT) PARTITION BY RANGE (id);
+                                CREATE TABLE test_part1 PARTITION OF test_part FOR VALUES FROM (1) TO (100);
+                                CREATE TABLE test_part2 PARTITION OF test_part FOR VALUES FROM (101) TO (200);
+                                ANALYZE test_part;
+                                """)
                 cursor.execute("EXPLAIN (FORMAT JSON) SELECT * FROM test_part WHERE id = 150;")
                 result = cursor.fetchone()
                 explain_output = result[0]
@@ -146,28 +171,31 @@ def test_feature(cursor, feature_category, feature_name):
             elif feature_name == "Parallel Query Execution":
                 cursor.execute("SET max_parallel_workers = 4; SET max_parallel_workers_per_gather=4; SELECT COUNT(*) FROM generate_series(1, 50000) t(id);")
             elif feature_name == "Unlogged Table":
-                cursor.execute("drop table if exists unlogged_pci_demo;")
-                cursor.execute("create unlogged table unlogged_pci_demo(n int primary key,flag char,text varchar(1000));")
+                cursor.execute("""drop table if exists unlogged_pci_demo;
+                                create unlogged table unlogged_pci_demo(n int primary key,flag char,text text);"""
+                )
                 cursor.execute("select pg_current_wal_lsn() from pg_stat_database where datname=current_database();")
                 wal_lsn_before = cursor.fetchone()[0]
-                cursor.execute("insert into unlogged_pci_demo select generate_series, 'N',lpad('x',1000,'x') from generate_series(1,50000);")
+                cursor.execute("insert into unlogged_pci_demo select generate_series, 'N',lpad('x',generate_series,'x') from generate_series(1,10000);")
                 cursor.execute(f"select (pg_wal_lsn_diff(pg_current_wal_lsn(),'{wal_lsn_before}')) from pg_stat_database where datname=current_database();")
                 diff_after = cursor.fetchone()[0]
-                if diff_after < 100000:
+                if diff_after < 50000:
                     return "full"
                 else:
                     raise Exception("Unlogged Table test failed: Excessive WAL Generated.")
 
         elif feature_category == "constraints":
             if feature_name == "Foreign Key":
-                cursor.execute("CREATE TABLE parent (id INT PRIMARY KEY); CREATE TABLE child (parent_id INT );")
-            elif feature_name == "Check":
+                cursor.execute("CREATE TABLE parent (id INT PRIMARY KEY); CREATE TABLE child (parent_id INT , CONSTRAINT fk_customer FOREIGN KEY(parent_id) REFERENCES parent(id));")
+            if feature_name == "Check":
                 cursor.execute("CREATE TABLE test_check (id INT CHECK (id > 0));")
-            elif feature_name == "Not Null":
+            if feature_name == "Not Null":
                 cursor.execute("CREATE TABLE test_notnull (id INT NOT NULL);")
-            elif feature_name == "Unique":
+            if feature_name == "Unique":
                 cursor.execute("CREATE TABLE test_unique (id INT UNIQUE);")
-            elif feature_name == "Exclusion":
+            if feature_name == "DisableConstraint":
+                cursor.execute("alter table child disable trigger all;")
+            if feature_name == "Exclusion":
                 cursor.execute("CREATE EXTENSION IF NOT EXISTS btree_gist; CREATE TABLE test_exclusion (id int, t text, ts tstzrange, exclude using gist ((case when t ='A' THEN true end) with =,ts with && ));")
 
         elif feature_category == "security":
@@ -175,6 +203,7 @@ def test_feature(cursor, feature_category, feature_name):
                 cursor.execute("CREATE ROLE test_role; DROP ROLE test_role;")
             elif feature_name == "GRANT/REVOKE Privileges":
                 cursor.execute("GRANT SELECT ON test_primitive TO PUBLIC;")
+                support = "partial"
             elif feature_name == "Row-Level Security":
                 cursor.execute("ALTER TABLE test_primitive ENABLE ROW LEVEL SECURITY;")
 
@@ -193,9 +222,20 @@ def test_feature(cursor, feature_category, feature_name):
         # Add similar blocks for other categories...
 
         return "full"
+    except errors.SyntaxError as e:
+        print(f"Feature {feature_name} failed in {feature_category}: {e}")
+        return support
+    except errors.UndefinedFunction  as e:
+        print(f"Feature {feature_name} failed in {feature_category}: {e}")
+        return support
+    except errors.FeatureNotSupported as e:
+        print(f"Feature {feature_name} failed in {feature_category}: {e}")
+        return support
     except Exception as e:
         print(f"Feature {feature_name} failed in {feature_category}: {e}")
-        return "no"
+        #cursor.execute('rollback;')
+        return support
+
 
 # Continue with schema creation, PCI calculations, and detailed reporting (same structure as earlier).
 def calculate_pci(features):
@@ -254,6 +294,7 @@ def main():
         for subfeature in subfeatures:
             pci_results[category][subfeature] = test_feature(cursor, category, subfeature)
 
+    print(pci_results)
     # Calculate PCI score
     pci_score, failed_tests = calculate_pci(pci_results)
     print_summary(pci_score, failed_tests)
