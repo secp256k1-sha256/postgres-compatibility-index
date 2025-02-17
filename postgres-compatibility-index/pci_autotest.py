@@ -134,7 +134,7 @@ def test_feature(cursor, feature_category, feature_name):
                 return support
             elif feature_name == "Foreign Data Wrappers":
                 #cursor.execute("CREATE EXTENSION IF NOT EXISTS postgres_fdw;")
-                cursor.execute("select coalesce((select 1 from pg_available_extensions where name ='postgres_fdw'),0")
+                cursor.execute("select coalesce((select 1 from pg_available_extensions where name ='postgres_fdw'),0)")
                 extensions = cursor.fetchone()[0]
                 if extensions !=  0:
                     support ="full"
