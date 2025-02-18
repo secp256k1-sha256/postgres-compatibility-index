@@ -32,7 +32,7 @@ FEATURES = {
     "sql_features": ["CTEs", "Upsert", "Window Functions", "Subqueries"],
     "procedural_features": ["Stored Procedures", "Functions", "Triggers"],
     "performance": ["Index Types", "Partitioning", "Parallel Query Execution","Unlogged Table"],
-    "constraints": ["Foreign Key", "Check", "Not Null", "Unique", "Exclusion","DisableConstraint"],    
+    "constraints": ["Foreign Key", "Check", "Not Null", "Unique", "Exclusion"],    
     "extensions": ["Extension Support", "Foreign Data Wrappers"],
     "security": ["Role Management", "GRANT/REVOKE Privileges", "Row-Level Security"],
     "replication": ["Streaming Replication", "Logical Replication"],
