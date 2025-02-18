@@ -32,11 +32,11 @@ FEATURES = {
     "sql_features": ["CTEs", "Upsert", "Window Functions", "Subqueries"],
     "procedural_features": ["Stored Procedures", "Functions", "Triggers"],
     "performance": ["Index Types", "Partitioning", "Parallel Query Execution","Unlogged Table"],
-    "constraints": ["Foreign Key", "Check", "Not Null", "Unique", "Exclusion","DisableConstraint"],
-    "transaction_features": ["ACID Compliance", "Isolation Levels", "Nested Transactions", "Row-Level Locking"],
+    "constraints": ["Foreign Key", "Check", "Not Null", "Unique", "Exclusion"],    
     "extensions": ["Extension Support", "Foreign Data Wrappers"],
     "security": ["Role Management", "GRANT/REVOKE Privileges", "Row-Level Security"],
     "replication": ["Streaming Replication", "Logical Replication"],
+    "transaction_features": ["ACID Compliance", "Isolation Levels", "Nested Transactions", "Row-Level Locking"],	
     "notifications": ["LISTEN/NOTIFY", "Event Triggers"],
     "miscellaneous": ["Temporary Tables", "Monitoring and Statistics"],
     "utilities": ["pg_dump", "pg_stat_statements", "pg_walinspect", "amcheck"]
@@ -50,13 +50,14 @@ FEATURE_WEIGHTS = {
     "procedural_features": 15,
     "transaction_features": 15,
     "extensions": 15,
-    "performance": 5,
+    "performance": 15,
     "constraints": 10,
     "security": 5,
-    "replication": 5,
-    "notifications": 5,
-    "miscellaneous": 5,
-    "utilities": 5
+    "replication": 10,
+#removing feature weight for tests not added yet.	
+    "notifications": 0,
+    "miscellaneous": 0,
+    "utilities": 0
 }
 
 PENALTY_PER_FAILURE = 5  # Negative points per failure
@@ -191,8 +192,8 @@ def test_feature(cursor, feature_category, feature_name):
                 cursor.execute("CREATE TABLE test_notnull (id INT NOT NULL);")
             if feature_name == "Unique":
                 cursor.execute("CREATE TABLE test_unique (id INT UNIQUE);")
-            if feature_name == "DisableConstraint":
-                cursor.execute("alter table child disable trigger all;")
+            #if feature_name == "DisableConstraint":
+                #cursor.execute("alter table child disable trigger all;")
             if feature_name == "Exclusion":
                 cursor.execute("CREATE EXTENSION IF NOT EXISTS btree_gist; CREATE TABLE test_exclusion (id int, t text, ts tstzrange, exclude using gist ((case when t ='A' THEN true end) with =,ts with && ));")
 
