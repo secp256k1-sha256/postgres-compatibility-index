@@ -4,6 +4,8 @@ This repository provides a standardized method to evaluate the compatibility of 
 
 PostgreSQL 17 is used for baseline.
 
+A visualization of the up-to-date results can be found in this dashboard: [postgres.is](https://postgres.is/)
+
 ## Methodology
 
 The PCI evaluates a fixed set of PostgreSQL features across 12 categories. Each feature is scored as:
