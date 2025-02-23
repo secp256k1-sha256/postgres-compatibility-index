@@ -38,7 +38,7 @@ FEATURES = {
     "replication": ["Streaming Replication", "Logical Replication"],
     "transaction_features": ["ACID Compliance", "Isolation Levels", "Nested Transactions", "Row-Level Locking"],	
     "notifications": ["LISTEN/NOTIFY", "Event Triggers"],
-    "miscellaneous": ["Temporary Tables"],
+    "miscellaneous": ['External Programming Language'],
     "utilities": ["pg_dump", "pg_stat_statements", "pg_walinspect", "amcheck"]
 }
 
@@ -46,7 +46,7 @@ SUPPORT_SCORES = {"full": 1.0, "partial": 0.5, "no": 0.0}
 FEATURE_WEIGHTS = {
     "data_types": 5,
     "ddl_features": 5,
-    "sql_features": 5,
+    "sql_features": 8,
     "procedural_features": 15,
     "transaction_features": 15,
     "extensions": 15,
@@ -56,11 +56,11 @@ FEATURE_WEIGHTS = {
     "replication": 10,
 #removing feature weight for tests not added yet.	
     "notifications": 0,
-    "miscellaneous": 0,
+    "miscellaneous": 2,
     "utilities": 0
 }
 
-PENALTY_PER_FAILURE = 5  # Negative points per failure
+PENALTY_PER_FAILURE = 2  # Negative points per failure
 
 
 def test_feature(cursor, feature_category, feature_name):
@@ -217,6 +217,30 @@ def test_feature(cursor, feature_category, feature_name):
                 else:
                     cursor.execute("DROP PUBLICATION test_pub;")
                     return "full"
+        
+        elif feature_category == "miscellaneous":
+            if feature_name == "External Programming Language":
+                cursor.execute("SET search_path TO public, pg_catalog;")
+                cursor.execute("CREATE EXTENSION IF NOT EXISTS unaccent;")
+                cursor.execute(
+                     "CREATE OR REPLACE FUNCTION public.immutable_unaccent(regdictionary, text) "
+                     "RETURNS text LANGUAGE c IMMUTABLE PARALLEL SAFE STRICT AS "
+                     "'$libdir/unaccent', 'unaccent_dict';"
+                   )
+                cursor.execute(
+                     "CREATE OR REPLACE FUNCTION public.f_unaccent(text) "
+                     "RETURNS text LANGUAGE sql IMMUTABLE PARALLEL SAFE STRICT AS "
+                     "$func$ SELECT public.immutable_unaccent(regdictionary 'public.unaccent', $1) $func$;"
+                   )
+                cursor.execute("SELECT public.f_unaccent('Crème Brûlée');")
+                
+                result = cursor.fetchone()[0]
+                support = "full" if result.strip() == "Creme Brulee" else "no"
+                   # Clean up by dropping the created functions
+                cursor.execute("DROP FUNCTION IF EXISTS public.f_unaccent(text);")
+                cursor.execute("DROP FUNCTION IF EXISTS public.immutable_unaccent(regdictionary, text);")
+                cursor.execute("DROP EXTENSION IF EXISTS unaccent;")
+            return support
 
         # Add similar blocks for other categories...
 
