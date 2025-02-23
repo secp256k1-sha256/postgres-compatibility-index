@@ -1,0 +1,76 @@
+{
+	"pci_score": 100,
+	"details": {
+    	"data_types": {
+        	"Primitive Types": "full",
+        	"Complex Types": "full",
+        	"JSONB": "full",
+        	"Geospatial Types": "full",
+        	"Custom Types": "full",
+        	"Full-Text Search": "full",
+        	"Vector": "full"
+    	},
+    	"DDL_features": {
+        	"Schemas": "full",
+        	"Sequences": "full",
+        	"Views": "full",
+        	"Materialized Views": "full"
+    	},
+    	"SQL_features": {
+        	"CTEs": "full",
+        	"Upsert": "full",
+        	"Window Functions": "full",
+        	"Subqueries": "full"
+    	},
+    	"procedural_features": {
+        	"Stored Procedures": "full",
+        	"Functions": "full",
+        	"Triggers": "full"
+    	},
+    	"transaction_features": {
+        	"ACID Compliance": "full",
+        	"Isolation Levels": "full",
+        	"Nested Transactions": "full",
+        	"Row-Level Locking": "full"
+    	},
+    	"extensions": {
+        	"Extension Support": "full",
+        	"Foreign Data Wrappers": "full"
+    	},
+    	"performance": {
+        	"Index Types": "full",
+        	"Partitioning": "full",
+        	"Parallel Query Execution": "full",
+        	"Unlogged Table": "full"
+    	},
+    	"constraints": {
+        	"Foreign Key": "full",
+        	"Check": "full",
+        	"Not Null": "full",
+        	"Unique": "full",
+        	"Exclusion": "full"
+    	},
+    	"security": {
+        	"Role Management": "full",
+        	"GRANT/REVOKE Privileges": "full",
+        	"Row-Level Security": "full"
+    	},
+    	"replication": {
+        	"Streaming Replication": "full",
+        	"Logical Replication": "full"
+    	},
+    	"notifications": {
+        	"LISTEN/NOTIFY": "full",
+        	"Event Triggers": "full"
+    	},
+    	"miscellaneous": {
+        	"Temporary Tables": "full"
+    	},
+    	"utilities": {
+        	"pg_dump": "full",
+        	"pg_stat_statements": "full",
+        	"pg_walinspect": "full",
+        	"amcheck": "full"
+    	}
+	}
+}
