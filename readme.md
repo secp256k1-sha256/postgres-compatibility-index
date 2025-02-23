@@ -6,6 +6,8 @@ PostgreSQL 17 is used for baseline.
 
 A visualization of the up-to-date results can be found in this dashboard: [postgres.is](https://postgres.is/)
 
+Origin story in a blog format => [drunkdba.medium.com/postgres-is-3cbae80c84a3](https://drunkdba.medium.com/postgres-is-3cbae80c84a3?source=friends_link&sk=995c021ce85ca67a3494551a1efb3de9)
+
 ## Methodology
 
 The PCI evaluates a fixed set of PostgreSQL features across 12 categories. Each feature is scored as:
@@ -19,6 +21,7 @@ The final PCI score is a weighted average of the scores for each category.
 ### Prerequisites
 - Python 3.5+, psycopg2, postgresql client and working connection to the database to be tested. 
 - pip install tabulate
+- Install postgis, pgvector extension to score more points as in some cases it will require pre-installation.
 
 ## Automated scoring
 - Set environment variables or provide inline username, connection details of the database where tests are supposed to run.
@@ -40,6 +43,8 @@ The final PCI score is a weighted average of the scores for each category.
 
 
 ## Manual mode example
+
+Manual mode is not recommended unless connectivity issues and last option.
 
 ### CockroachDB
 /pci/postgres-compatibility-index/postgres-compatibility-index$ python3 pci_calculator.py example_inputs/cockroach.json outputs/cockroachdb_report.txt

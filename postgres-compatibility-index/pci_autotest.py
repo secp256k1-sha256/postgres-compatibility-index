@@ -38,7 +38,7 @@ FEATURES = {
     "replication": ["Streaming Replication", "Logical Replication"],
     "transaction_features": ["ACID Compliance", "Isolation Levels", "Nested Transactions", "Row-Level Locking"],	
     "notifications": ["LISTEN/NOTIFY", "Event Triggers"],
-    "miscellaneous": ["Temporary Tables", "Monitoring and Statistics"],
+    "miscellaneous": ["Temporary Tables"],
     "utilities": ["pg_dump", "pg_stat_statements", "pg_walinspect", "amcheck"]
 }
 

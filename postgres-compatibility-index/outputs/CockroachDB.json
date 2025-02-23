@@ -1,0 +1,76 @@
+{
+	"pci_score": 40.21,
+	"details": {
+    	"data_types": {
+        	"Primitive Types": "full",
+        	"Complex Types": "full",
+        	"JSONB": "full",
+        	"Geospatial Types": "full",
+        	"Custom Types": "full",
+        	"Full-Text Search": "full",
+        	"Vector": "full"
+    	},
+    	"DDL_features": {
+        	"Schemas": "full",
+        	"Sequences": "full",
+        	"Views": "full",
+        	"Materialized Views": "full"
+    	},
+    	"SQL_features": {
+        	"CTEs": "full",
+        	"Upsert": "full",
+        	"Window Functions": "full",
+        	"Subqueries": "full"
+    	},
+    	"procedural_features": {
+        	"Stored Procedures": "full",
+        	"Functions": "full",
+        	"Triggers": "full"
+    	},
+    	"transaction_features": {
+        	"ACID Compliance": "full",
+        	"Isolation Levels": "full",
+        	"Nested Transactions": "full",
+        	"Row-Level Locking": "full"
+    	},
+    	"extensions": {
+        	"Extension Support": "full",
+        	"Foreign Data Wrappers": "no"
+    	},
+    	"performance": {
+        	"Index Types": "no",
+        	"Partitioning": "no",
+        	"Parallel Query Execution": "no",
+        	"Unlogged Table": "no"
+    	},
+    	"constraints": {
+        	"Foreign Key": "full",
+        	"Check": "full",
+        	"Not Null": "full",
+        	"Unique": "full",
+        	"Exclusion": "no"
+    	},
+    	"security": {
+        	"Role Management": "full",
+        	"GRANT/REVOKE Privileges": "full",
+        	"Row-Level Security": "no"
+    	},
+    	"replication": {
+        	"Streaming Replication": "full",
+        	"Logical Replication": "no"
+    	},
+    	"notifications": {
+        	"LISTEN/NOTIFY": "full",
+        	"Event Triggers": "full"
+    	},
+    	"miscellaneous": {
+        	"Temporary Tables": "no"
+    	},
+    	"utilities": {
+        	"pg_dump": "no",
+        	"pg_stat_statements": "no",
+        	"pg_walinspect": "no",
+        	"amcheck": "no"
+    	}
+	}
+}
