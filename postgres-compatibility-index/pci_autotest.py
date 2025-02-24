@@ -45,19 +45,19 @@ FEATURES = {
 
 SUPPORT_SCORES = {"full": 1.0, "partial": 0.5, "no": 0.0}
 FEATURE_WEIGHTS = {
-    "data_types": 5,
+    "data_types": 7,
     "ddl_features": 5,
-    "sql_features": 8,
+    "sql_features": 6,
     "procedural_features": 15,
     "transaction_features": 15,
     "extensions": 15,
-    "performance": 15,
+    "performance": 10,
     "constraints": 10,
     "security": 5,
     "replication": 10,
+    "miscellaneous": 2,	
 #removing feature weight for tests not added yet.	
     "notifications": 0,
-    "miscellaneous": 2,
     "utilities": 0
 }
 
