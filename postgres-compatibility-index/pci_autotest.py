@@ -37,7 +37,8 @@ FEATURES = {
     "security": ["Role Management", "GRANT/REVOKE Privileges", "Row-Level Security"],
     "replication": ["Streaming Replication", "Logical Replication"],
     "transaction_features": ["ACID Compliance", "Isolation Levels", "Nested Transactions", "Row-Level Locking"],	
-    "notifications": ["LISTEN/NOTIFY", "Event Triggers"],
+# Removed till addition of tests
+#    "notifications": ["LISTEN/NOTIFY", "Event Triggers"],
     "miscellaneous": ['External Programming Language'],
     "utilities": ["pg_dump", "pg_stat_statements", "pg_walinspect", "amcheck"]
 }
@@ -240,7 +241,7 @@ def test_feature(cursor, feature_category, feature_name):
                 cursor.execute("DROP FUNCTION IF EXISTS public.f_unaccent(text);")
                 cursor.execute("DROP FUNCTION IF EXISTS public.immutable_unaccent(regdictionary, text);")
                 cursor.execute("DROP EXTENSION IF EXISTS unaccent;")
-            return support
+            
 
         # Add similar blocks for other categories...
 
