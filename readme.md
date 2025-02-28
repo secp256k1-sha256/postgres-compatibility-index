@@ -8,6 +8,8 @@ A visualization of the up-to-date results can be found in this dashboard: [postg
 
 Origin story in a blog format => [drunkdba.medium.com/postgres-is-3cbae80c84a3](https://drunkdba.medium.com/postgres-is-3cbae80c84a3?source=friends_link&sk=995c021ce85ca67a3494551a1efb3de9)
 
+[Philosophy behind "Postgres-Compatibility-Index"](https://drunkdba.medium.com/the-making-of-postgres-is-5034c0dc4639?source=friends_link&sk=701e1db2c908fb22d3afdc8dc41f0f2e)
+
 ## Methodology
 
 The PCI evaluates a fixed set of PostgreSQL features across 12 categories. Each feature is scored as:
