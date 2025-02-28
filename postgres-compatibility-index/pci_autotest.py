@@ -20,8 +20,8 @@ def get_connection():
         user=PG_USER,
         password=PG_PASSWORD,
         dbname=PG_DBNAME,
-	    sslmode='require'
-        #sslrootcert='/home/dcgcore/postgres-compatibility-index/postgres-compatibility-index/root.crt'
+	sslmode='require'
+        #sslrootcert='/home/postgres-compatibility-index/postgres-compatibility-index/root.crt'
 
     )
 
@@ -37,10 +37,10 @@ FEATURES = {
     "security": ["Role Management", "GRANT/REVOKE Privileges", "Row-Level Security"],
     "replication": ["Streaming Replication", "Logical Replication"],
     "transaction_features": ["ACID Compliance", "Isolation Levels", "Nested Transactions", "Row-Level Locking"],	
-# Removed till addition of tests
+# Temporarily Removed
 #    "notifications": ["LISTEN/NOTIFY", "Event Triggers"],
     "miscellaneous": ["pg_stat_statements", "pg_walinspect","External Programming Language"],
-# Removed till addition of tests
+# Temporarily Removed
 #    "utilities": ["pg_dump", , "amcheck"]
 }
 
@@ -234,14 +234,9 @@ def test_feature(cursor, feature_category, feature_name):
                      "RETURNS text LANGUAGE sql IMMUTABLE PARALLEL SAFE STRICT AS "
                      "$func$ SELECT public.immutable_unaccent(regdictionary 'public.unaccent', $1) $func$;"
                    )
-                cursor.execute("SELECT public.f_unaccent('Crème Brûlée');")
-                
+                cursor.execute("SELECT public.f_unaccent('Crème Brûlée');")                
                 result = cursor.fetchone()[0]
                 support = "full" if result.strip() == "Creme Brulee" else "no"
-                   # Clean up by dropping the created functions
-                cursor.execute("DROP FUNCTION IF EXISTS public.f_unaccent(text);")
-                cursor.execute("DROP FUNCTION IF EXISTS public.immutable_unaccent(regdictionary, text);")
-                cursor.execute("DROP EXTENSION IF EXISTS unaccent;")
             elif feature_name == "pg_stat_statements":
                 cursor.execute("CREATE EXTENSION IF NOT EXISTS pg_stat_statements;")
                 cursor.execute("SELECT count(*) FROM pg_stat_statements;")
