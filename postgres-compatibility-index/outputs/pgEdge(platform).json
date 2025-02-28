@@ -27,10 +27,6 @@
             "Functions": "full",
             "Triggers": "full"
         },
-        "extensions": {
-            "Extension Support": "full",
-            "Foreign Data Wrappers": "full"
-        },
         "performance": {
             "Index Types": "full",
             "Partitioning": "full",
@@ -43,6 +39,10 @@
             "Not Null": "full",
             "Unique": "full",
             "Exclusion": "full"
+        },
+        "extensions": {
+            "Extension Support": "full",
+            "Foreign Data Wrappers": "full"
         },
         "security": {
             "Role Management": "full",

@@ -62,7 +62,7 @@ FEATURE_WEIGHTS = {
     "utilities": 0
 }
 
-PENALTY_PER_FAILURE = 1.5  # Negative points per failure
+PENALTY_PER_FAILURE = 1  # Negative points per failure
 
 
 def test_feature(cursor, feature_category, feature_name):
