@@ -28,8 +28,8 @@ def get_connection():
 # Define the features to test
 FEATURES = {
     "data_types": ["Primitive Types", "Complex Types", "JSONB", "Geospatial Types", "Custom Types", "Full-Text Search", "Vector"],
-    "ddl_features": ["Schemas", "Sequences", "Views", "Materialized Views"],
-    "sql_features": ["CTEs", "Upsert", "Window Functions", "Subqueries"],
+    "DDL_features": ["Schemas", "Sequences", "Views", "Materialized Views"],
+    "SQL_features": ["CTEs", "Upsert", "Window Functions", "Subqueries"],
     "procedural_features": ["Stored Procedures", "Functions", "Triggers"],
     "performance": ["Index Types", "Partitioning", "Parallel Query Execution","Unlogged Table"],
     "constraints": ["Foreign Key", "Check", "Not Null", "Unique", "Exclusion"],    
@@ -39,15 +39,16 @@ FEATURES = {
     "transaction_features": ["ACID Compliance", "Isolation Levels", "Nested Transactions", "Row-Level Locking"],	
 # Removed till addition of tests
 #    "notifications": ["LISTEN/NOTIFY", "Event Triggers"],
-    "miscellaneous": ['External Programming Language'],
-    "utilities": ["pg_dump", "pg_stat_statements", "pg_walinspect", "amcheck"]
+    "miscellaneous": ["pg_stat_statements", "pg_walinspect","External Programming Language"],
+# Removed till addition of tests
+#    "utilities": ["pg_dump", , "amcheck"]
 }
 
 SUPPORT_SCORES = {"full": 1.0, "partial": 0.5, "no": 0.0}
 FEATURE_WEIGHTS = {
     "data_types": 7,
-    "ddl_features": 5,
-    "sql_features": 6,
+    "DDL_features": 5,
+    "SQL_features": 6,
     "procedural_features": 15,
     "transaction_features": 15,
     "extensions": 15,
@@ -61,7 +62,7 @@ FEATURE_WEIGHTS = {
     "utilities": 0
 }
 
-PENALTY_PER_FAILURE = 2  # Negative points per failure
+PENALTY_PER_FAILURE = 1.5  # Negative points per failure
 
 
 def test_feature(cursor, feature_category, feature_name):
@@ -84,7 +85,7 @@ def test_feature(cursor, feature_category, feature_name):
             elif feature_name == "Vector":
                 cursor.execute("CREATE EXTENSION vector; CREATE TABLE test_vector (embedding VECTOR(3));")
 
-        elif feature_category == "ddl_features":
+        elif feature_category == "DDL_features":
             if feature_name == "Schemas":
                 cursor.execute("DROP SCHEMA IF EXISTS test_schema CASCADE; CREATE SCHEMA test_schema;")
             elif feature_name == "Sequences":
@@ -94,7 +95,7 @@ def test_feature(cursor, feature_category, feature_name):
             elif feature_name == "Materialized Views":
                 cursor.execute("CREATE MATERIALIZED VIEW test_matview AS SELECT 1 AS col;")
 
-        elif feature_category == "sql_features":
+        elif feature_category == "SQL_features":
             if feature_name == "CTEs":
                 cursor.execute("WITH cte AS (SELECT 1 AS val) SELECT * FROM cte;")
             elif feature_name == "Upsert":
@@ -241,6 +242,11 @@ def test_feature(cursor, feature_category, feature_name):
                 cursor.execute("DROP FUNCTION IF EXISTS public.f_unaccent(text);")
                 cursor.execute("DROP FUNCTION IF EXISTS public.immutable_unaccent(regdictionary, text);")
                 cursor.execute("DROP EXTENSION IF EXISTS unaccent;")
+            elif feature_name == "pg_stat_statements":
+                cursor.execute("CREATE EXTENSION IF NOT EXISTS pg_stat_statements;")
+                cursor.execute("SELECT count(*) FROM pg_stat_statements;")
+            elif feature_name == "pg_walinspect":
+                cursor.execute("CREATE EXTENSION IF NOT EXISTS pg_walinspect;")
             
 
         # Add similar blocks for other categories...
