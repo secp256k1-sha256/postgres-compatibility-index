@@ -4,11 +4,13 @@ This repository provides a standardized method to evaluate the compatibility of 
 
 PostgreSQL 17 is used for baseline.
 
-A visualization of the up-to-date results can be found in this dashboard: [postgres.is](https://postgres.is/)
+A visualization of the up-to-date results can be found in this dashboard: [pgscorecard.com](https://pgscorecard.com/)
 
 Origin story in a blog format => [drunkdba.medium.com/postgres-is-3cbae80c84a3](https://drunkdba.medium.com/postgres-is-3cbae80c84a3?source=friends_link&sk=995c021ce85ca67a3494551a1efb3de9)
 
 [Philosophy behind "Postgres-Compatibility-Index"](https://drunkdba.medium.com/the-making-of-postgres-is-5034c0dc4639?source=friends_link&sk=701e1db2c908fb22d3afdc8dc41f0f2e)
+
+Update: In response to a trademark notice from the PostgreSQL Community Association of Canada, domain has been changed from “Postgres.Is” to pgscorecard.com
 
 ## Methodology
 
@@ -50,12 +52,12 @@ Manual mode is not recommended unless connectivity issues and last option.
 
 ### CockroachDB
 /pci/postgres-compatibility-index/postgres-compatibility-index$ python3 pci_calculator.py example_inputs/cockroach.json outputs/cockroachdb_report.txt
-- PCI Score: 53.66%
+- PCI Score: 40.21%
 - Detailed report saved to outputs/cockroachdb_report.txt
 
 ### DSQL
 /pci/postgres-compatibility-index/postgres-compatibility-index$ python3 pci_calculator.py example_inputs/dsql.json outputs/dsql_report.txt
-- PCI Score: 18.39%
+- PCI Score: 21.05%
 - Detailed report saved to outputs/dsql_report.txt
 
 ### Yugabyte
@@ -65,5 +67,5 @@ Manual mode is not recommended unless connectivity issues and last option.
 
 ### AlloyDB
 /pci/postgres-compatibility-index/postgres-compatibility-index$ python3 pci_calculator.py example_inputs/alloydb.json outputs/alloydb_report.txt
-- PCI Score: 100%
+- PCI Score: 93.17%
 - Detailed report saved to outputs/alloydb_report.txt
