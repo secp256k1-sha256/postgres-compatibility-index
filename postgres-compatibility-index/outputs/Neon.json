@@ -1,5 +1,5 @@
 {
-	"pci_score": 100,
+	"pci_score": 96.67,
 	"details": {
     	"data_types": {
         	"Primitive Types": "full",
@@ -27,12 +27,6 @@
         	"Functions": "full",
         	"Triggers": "full"
     	},
-    	"transaction_features": {
-        	"ACID Compliance": "full",
-        	"Isolation Levels": "full",
-        	"Nested Transactions": "full",
-        	"Row-Level Locking": "full"
-    	},
     	"extensions": {
         	"Extension Support": "full",
         	"Foreign Data Wrappers": "full"
@@ -59,18 +53,16 @@
         	"Streaming Replication": "full",
         	"Logical Replication": "full"
     	},
-    	"notifications": {
-        	"LISTEN/NOTIFY": "full",
-        	"Event Triggers": "full"
+    	"transaction_features": {
+        	"ACID Compliance": "full",
+        	"Isolation Levels": "full",
+        	"Nested Transactions": "full",
+        	"Row-Level Locking": "full"
     	},
-    	"miscellaneous": {
-        	"Temporary Tables": "full"
-    	},
-    	"utilities": {
-        	"pg_dump": "full",
-        	"pg_stat_statements": "full",
-        	"pg_walinspect": "full",
-        	"amcheck": "full"
-    	}
+        "miscellaneous": {
+            "pg_stat_statements": "full",
+            "pg_walinspect": "no",
+            "External Programming Language": "no"
+        }
 	}
 }

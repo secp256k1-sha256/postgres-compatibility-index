@@ -27,12 +27,6 @@
         	"Functions": "full",
         	"Triggers": "full"
     	},
-    	"transaction_features": {
-        	"ACID Compliance": "full",
-        	"Isolation Levels": "full",
-        	"Nested Transactions": "full",
-        	"Row-Level Locking": "full"
-    	},
     	"extensions": {
         	"Extension Support": "full",
         	"Foreign Data Wrappers": "no"
@@ -59,18 +53,16 @@
         	"Streaming Replication": "full",
         	"Logical Replication": "no"
     	},
-    	"notifications": {
-        	"LISTEN/NOTIFY": "full",
-        	"Event Triggers": "full"
+    	"transaction_features": {
+        	"ACID Compliance": "full",
+        	"Isolation Levels": "full",
+        	"Nested Transactions": "full",
+        	"Row-Level Locking": "full"
     	},
-    	"miscellaneous": {
-        	"Temporary Tables": "no"
-    	},
-    	"utilities": {
-        	"pg_dump": "no",
-        	"pg_stat_statements": "no",
-        	"pg_walinspect": "no",
-        	"amcheck": "no"
-    	}
+        "miscellaneous": {
+            "pg_stat_statements": "no",
+            "pg_walinspect": "no",
+            "External Programming Language": "no"
+        }
 	}
 }
