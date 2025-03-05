@@ -4,7 +4,7 @@ This repository provides a standardized method to evaluate the compatibility of 
 
 PostgreSQL 17 is used for baseline.
 
-A visualization of the up-to-date results can be found in this dashboard: [pgscorecard.com](https://pgscorecard.com/)
+A visualization of the up-to-date results can be found in "PGSorecard" dashboard: [pgscorecard.com](https://pgscorecard.com/)
 
 Origin story in a blog format => [drunkdba.medium.com/postgres-is-3cbae80c84a3](https://drunkdba.medium.com/postgres-is-3cbae80c84a3?source=friends_link&sk=995c021ce85ca67a3494551a1efb3de9)
 
