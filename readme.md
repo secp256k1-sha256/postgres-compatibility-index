@@ -10,7 +10,7 @@ Origin story in a blog format => [drunkdba.medium.com/postgres-is-3cbae80c84a3](
 
 [Philosophy behind "Postgres-Compatibility-Index"](https://drunkdba.medium.com/the-making-of-postgres-is-5034c0dc4639?source=friends_link&sk=701e1db2c908fb22d3afdc8dc41f0f2e)
 
-Update: In response to a trademark notice from the PostgreSQL Community Association of Canada, domain has been changed from “Postgres.Is” to pgscorecard.com
+Update: In response to a trademark notice from the PostgreSQL Community Association of Canada, domain has been changed from “Postgres.Is” to "pgscorecard.com"
 
 ## Methodology
 
