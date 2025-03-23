@@ -238,6 +238,7 @@ def test_feature(cursor, feature_category, feature_name):
                 result = cursor.fetchone()[0]
                 support = "full" if result.strip() == "Creme Brulee" else "no"
             elif feature_name == "pg_stat_statements":
+		cursor.execute("SET search_path TO public;")    
                 cursor.execute("CREATE EXTENSION IF NOT EXISTS pg_stat_statements;")
                 cursor.execute("SELECT count(*) FROM pg_stat_statements;")
             elif feature_name == "pg_walinspect":
