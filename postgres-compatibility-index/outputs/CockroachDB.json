@@ -1,5 +1,5 @@
 {
-	"pci_score": 40.21,
+	"pci_score": 57.25,
 	"details": {
     	"data_types": {
         	"Primitive Types": "full",
@@ -47,7 +47,7 @@
     	"security": {
         	"Role Management": "full",
         	"GRANT/REVOKE Privileges": "full",
-        	"Row-Level Security": "no"
+        	"Row-Level Security": "full"
     	},
     	"replication": {
         	"Streaming Replication": "full",
